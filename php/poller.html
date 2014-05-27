@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Longpoller</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+    function waitForMsg(){
+        $.ajax({
+            type: "GET",
+            url: "message.php",
+
+            async: true,
+            cache: false,
+            timeout:50000,
+
+            success: function(data){ 
+                currentTime = new Date().getTime();
+                console.log(currentTime - data);
+                setTimeout(
+                    waitForMsg,
+                    2000
+                );
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log('error');
+                setTimeout(
+                    waitForMsg,
+                    15000);
+            }
+        });
+    };
+
+    $(document).ready(function(){
+        waitForMsg();
+    });
+    </script>
+</head>
+<body>
+</body>
+</html>
